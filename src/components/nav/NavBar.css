@@ -1,0 +1,16 @@
+.navbar {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: left;
+    background-color: goldenrod;
+    padding: 3rem;
+    font-size: x-large;
+}
+.navbar__item {
+    flex-basis: 20%;
+    list-style-type: none;
+}
+.navbar__logout {
+    margin-left: auto;
+}
+

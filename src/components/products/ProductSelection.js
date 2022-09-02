@@ -1,40 +1,75 @@
-export const Products = (props) => {
+import { useEffect, useState } from "react"
+import { Product } from "./Product"
 
-    return <article className='products'>
-        <h1>List of Products</h1>
+export const Products = () => {
+    const [products, changeProducts] = useState([])
+    const [chosenProducts, setChosen] = useState(new Set())
+    const [bargainProducts, setBargains] = useState([])
+    const [userWantsToSeeBargainProducts, setBargainChosen] = useState(false)
 
-        <button
-            onClick={() => {
-                // Toggle userWantsToSeeBargainProducts to true
-                if (props.userWantsToSeeBargainProducts) {
-                    props.setBargainChosen(false)
+    useEffect(() => {
+       setBargains(products)
+    }, [products])
 
-                }
-                else {
-                    props.setBargainChosen(true)
+    useEffect(() => {
+        fetch(`http://localhost:8088/products`)
+            .then(response => response.json())
+            .then((arrayOfAllProductObjects) => {
+                changeProducts(arrayOfAllProductObjects)
+            })
+    }, [])
 
-                }
-            }}
-        >Bargain Only</button>
+    useEffect(
+        () => {
+            if (userWantsToSeeBargainProducts) {
+                // Find all the products that cost $40 or less
+                const theBargains = products.filter(p => p.price < 40)
 
+                // Update the array of bargain products with what we found
+                setBargains(theBargains)
+
+            }
+            else {
+                setBargains(products)
+
+            }
+        },
+        [userWantsToSeeBargainProducts]
+    )
+
+    return <>
+        <article className='products'>
+            <h1>List of Products</h1>
+
+            <button
+                onClick={() => {
+                    setBargainChosen(!userWantsToSeeBargainProducts)
+                    /*
+                    userWantsToSeeBargainProducts
+                        ? setBargainChosen(false)
+                        : setBargainChosen(true)
+                         */
+                }}
+            >Bargain Only</button>
+
+            {
+                bargainProducts.map(
+                    (product) => {
+                        return <Product key={`product--${product.id}`}
+                                        product={product}
+                                        chosenProducts={chosenProducts}
+                                        setChosen={setChosen} />
+                    }
+                )
+            }
+        </article>
+
+        <h2>Shopping Cart</h2>
         {
-            props.bargainProducts.map(
-                (product) => {
-                    return <section className='product' key={`product--${product.id}`}>
-                        <input
-                            onChange={
-                                (evt) => {
-                                    const copy = new Set(props.chosenProducts)
-                                    copy.has(product.id) ? copy.delete(product.id) : copy.add(product.id)
-                                    props.setterFunction(copy)
-                                }
-                            }
-                            type="checkbox" value={product.id} />
-                                {product.name}
-                                {product.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                    </section>
-                }
-            )
+            Array.from(chosenProducts).map(id => {
+                const product = products.find(p => p.id === id)
+                return <div>{product.name}</div>
+            })
         }
-    </article>
+    </>
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Product } from "./Product"
 
-export const Products = () => {
+export const Products = ({ userSearchTerms }) => {
     const [products, changeProducts] = useState([])
     const [chosenProducts, setChosen] = useState(new Set())
     const [bargainProducts, setBargains] = useState([])
@@ -12,6 +12,18 @@ export const Products = () => {
     useEffect(() => {
        setBargains(products)
     }, [products])
+
+
+    useEffect(() => {
+        // Step 1 - Filter all products to matching ones
+        const matchingProducts = products.filter((product) => {
+            return product.name.toLowerCase().includes(userSearchTerms.toLowerCase())  // true/false
+        })
+
+        // Step 2 - Update state being used to render HTML
+        setBargains(matchingProducts)
+    }, [userSearchTerms])
+
 
     useEffect(() => {
         fetch(`http://localhost:8088/products`)

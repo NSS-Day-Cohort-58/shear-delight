@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 export const ProductForm = () => {
-    // TODO: Provide initial state for product
     const [newProduct, changeNewProduct] = useState({
         name: "",
         price: 0,
@@ -67,7 +66,7 @@ export const ProductForm = () => {
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="productName">Product name:</label>
-                    <input
+                    <input tabIndex={1}
                         required autoFocus
                         type="text" id="productName"
                         className="form-control"
@@ -102,6 +101,7 @@ export const ProductForm = () => {
                 <div className="form-group">
                     <label htmlFor="productType">Product type:</label>
                     <select id="productType" value={newProduct.productTypeId}
+                            tabIndex={4}
                             onChange={(evt) => {
                                 const copy = {...newProduct}
                                 copy.productTypeId = evt.target.value
@@ -120,6 +120,7 @@ export const ProductForm = () => {
                         onChange={(event) => {
                             updateNewType(event.target.value)
                         }}
+                        tabIndex={2}
                         type="text" placeHolder="New product type..." value={newType} />
                 </div>
             </fieldset>

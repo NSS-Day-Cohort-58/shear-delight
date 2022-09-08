@@ -1,15 +1,22 @@
 .navbar {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: left;
+    justify-content: space-around;
     background-color: goldenrod;
     padding: 3rem;
     font-size: x-large;
 }
+
 .navbar__item {
     flex-basis: 20%;
+    font-size: smaller;
     list-style-type: none;
 }
+
+.navbar__link {
+    color: fuchsia;
+}
+
 .navbar__logout {
     margin-left: auto;
 }

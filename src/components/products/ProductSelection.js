@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Product } from "./Product"
 
 export const Products = () => {
@@ -6,6 +7,7 @@ export const Products = () => {
     const [chosenProducts, setChosen] = useState(new Set())
     const [bargainProducts, setBargains] = useState([])
     const [userWantsToSeeBargainProducts, setBargainChosen] = useState(false)
+    const navygayte = useNavigate()
 
     useEffect(() => {
        setBargains(products)
@@ -21,18 +23,9 @@ export const Products = () => {
 
     useEffect(
         () => {
-            if (userWantsToSeeBargainProducts) {
-                // Find all the products that cost $40 or less
-                const theBargains = products.filter(p => p.price < 40)
-
-                // Update the array of bargain products with what we found
-                setBargains(theBargains)
-
-            }
-            else {
-                setBargains(products)
-
-            }
+            userWantsToSeeBargainProducts
+                ? setBargains(products.filter(p => p.price < 40))
+                : setBargains(products)
         },
         [userWantsToSeeBargainProducts]
     )
@@ -42,15 +35,12 @@ export const Products = () => {
             <h1>List of Products</h1>
 
             <button
-                onClick={() => {
-                    setBargainChosen(!userWantsToSeeBargainProducts)
-                    /*
-                    userWantsToSeeBargainProducts
-                        ? setBargainChosen(false)
-                        : setBargainChosen(true)
-                         */
-                }}
+                onClick={() => setBargainChosen(!userWantsToSeeBargainProducts)}
             >Bargain Only</button>
+
+            <button
+                onClick={() => navygayte("/productCreatorinator") }
+            >Create New Product</button>
 
             {
                 bargainProducts.map(

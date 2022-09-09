@@ -1,5 +1,6 @@
 import { Outlet, Route, Routes } from "react-router-dom"
 import { ColorList } from "./colors/ColorList"
+import { ProductEditForm } from "./products/ProductEditForm"
 import { ProductForm } from "./products/ProductForm"
 import { ProductSearch } from "./products/ProductSearch"
 import { ProductSearchContainer } from "./products/ProductSearchContainer"
@@ -16,20 +17,12 @@ export const ApplicationViews = ({ stylists, styles, colors }) => {
                     <Outlet />
                 </>
             }>
-                <Route path="stylists" element={
-                    <StylistList stylists={stylists} />
-                } />
-                <Route path="styles" element={
-                    <StyleList styles={styles} />
-                } />
-                <Route path="colors" element={
-                    <ColorList colorArray={colors} />
-                } />
-                <Route path="productChooserator" element={ <>
-                    <ProductSearchContainer />
-                </> } />
+                <Route path="stylists" element={ <StylistList stylists={stylists} /> } />
+                <Route path="styles" element={ <StyleList styles={styles} /> } />
+                <Route path="colors" element={ <ColorList colorArray={colors} /> } />
+                <Route path="productChooserator" element={ <ProductSearchContainer /> } />
                 <Route path="productCreatorinator" element={ <ProductForm /> } />
-
+                <Route path="product/edit/:productId" element={ <ProductEditForm /> } />
             </Route>
         </Routes>
     )

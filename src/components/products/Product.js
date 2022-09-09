@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 export const Product = ({ product, chosenProducts, setChosen }) => {
     return <section className='product'>
     <input
@@ -9,7 +11,7 @@ export const Product = ({ product, chosenProducts, setChosen }) => {
             }
         }
         type="checkbox" value={product.id} />
-    {product.name}
+    <Link to={`/product/edit/${product.id}`}>{product.name}</Link>
     {product.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
 </section>
 }
